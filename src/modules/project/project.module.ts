@@ -1,9 +1,8 @@
-import { BrowserModule } from '@angular/platform-browser';
+/* tslint:disable: ordered-imports*/
 import { NgModule } from '@angular/core';
-
-import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -39,20 +38,20 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 
-import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import * as projectComponents from './components';
+
+import * as projectContainers from './containers';
+
+import * as projectGuards from './guards';
+
+import * as projectServices from './services';
 
 @NgModule({
-  declarations: [AppComponent],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
+    CommonModule,
     RouterModule,
-    FormsModule,
-    BsDatepickerModule,
     ReactiveFormsModule,
+    FormsModule,
     MatAutocompleteModule,
     MatBadgeModule,
     MatBottomSheetModule,
@@ -89,7 +88,8 @@ import { AppComponent } from './app.component';
     MatTooltipModule,
     MatTreeModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [...projectServices.services, ...projectGuards.guards],
+  declarations: [...projectContainers.containers, ...projectComponents.components],
+  exports: [...projectContainers.containers, ...projectComponents.components]
 })
-export class AppModule {}
+export class ProjectModule {}

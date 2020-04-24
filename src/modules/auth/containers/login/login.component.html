@@ -1,0 +1,72 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-5">
+      <div class="card shadow-lg border-0 rounded-lg mt-5">
+
+        <div class="card-header">
+          <h3 class="text-center font-weight-light my-4">Login</h3>
+        </div>
+
+        <div class="card-body">
+          <form [formGroup]="loginForm" (ngSubmit)="authorize()">
+            <div class="form-group">
+              <label class="small mb-1" for="inputLogin">Login</label>
+              <input class="form-control py-4" id="inputLogin"
+                [ngClass]="{'is-invalid': loginForm.get('login').errors && loginForm.get('login').touched}"
+                formControlName="login" type="email" placeholder="Enter login" />
+
+              <div class="invalid-feedback"
+                *ngIf="loginForm.get('login').hasError('required') && loginForm.get('login').touched">
+                Login is required
+              </div>
+
+              <div class="invalid-feedback"
+                *ngIf="loginForm.get('login').hasError('pattern') && loginForm.get('login').touched">
+                Login invalid
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="small mb-1" for="inputPassword">Password</label>
+              <input class="form-control py-4" id="inputPassword" [ngClass]="{'is-invalid': loginForm.get('password').errors &&
+                    loginForm.get('password').touched}" formControlName="password" type="password"
+                placeholder="Enter password" />
+
+              <div class="invalid-feedback"
+                *ngIf="loginForm.get('password').hasError('required') && loginForm.get('password').touched">
+                Password is required
+              </div>
+
+              <div class="invalid-feedback"
+                *ngIf="loginForm.get('password').hasError('pattern') && loginForm.get('password').touched">
+                Password invalid
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
+                <label class="custom-control-label" for="rememberPasswordCheck">
+                  Remember password
+                </label>
+              </div>
+            </div>
+            <div [hidden]="!state" class="alert alert-danger" role="alert">
+              Wrong login or password. Try again
+            </div>
+            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+              <button [disabled]="!loginForm.valid" class="btn btn-primary" type="submit">Login</button>
+            </div>
+          </form>
+        </div>
+
+        <div class=" card-footer text-center">
+          <div class="small">
+            <a routerLink="/auth/register">Need an account? Sign up!</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

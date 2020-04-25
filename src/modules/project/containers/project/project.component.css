@@ -1,4 +1,6 @@
-tr {
+/** @format */
+
+/* tr {
   border-color: white;
   border-style: solid;
   border-width: 2px;
@@ -6,21 +8,102 @@ tr {
 
 td {
   border-radius: 100px;
+} */
+
+.draw-border {
+  -webkit-transition: color 0.25s 0.0833333333s;
+  transition: color 0.25s 0.0833333333s;
+  position: relative;
 }
 
-
-.extended-fab-button {
-  width: unset;
-  padding: 0 26px;
-  border-radius: 29px;
+.draw-border::before,
+.draw-border::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
+}
+.draw-border::before {
+  border-bottom-width: 4px;
+  border-left-width: 4px;
+}
+.draw-border::after {
+  border-top-width: 4px;
+  border-right-width: 4px;
+}
+.draw-border:hover {
+  color: #5cd158;
+}
+.draw-border:hover::before,
+.draw-border:hover::after {
+  border-color: #5cd158;
+  -webkit-transition: border-color 0s, width 0.25s, height 0.25s;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+.draw-border:hover::before {
+  -webkit-transition-delay: 0s, 0s, 0.25s;
+  transition-delay: 0s, 0s, 0.25s;
+}
+.draw-border:hover::after {
+  -webkit-transition-delay: 0s, 0.25s, 0s;
+  transition-delay: 0s, 0.25s, 0s;
 }
 
-.mat-icon {
-  margin-right: 10px;
+table {
+  width: 100%;
 }
 
-.extended-fab-button__text {
-  font-weight: 300;
-  letter-spacing: .1em;
-  text-transform: uppercase;
+td.mat-cell {
+  padding: 20px 0;
+  border: none;
+}
+
+td.mat-cell {
+  text-align: center;
+}
+
+.mat-column-name {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 60% !important;
+  width: 60% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-position {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 7% !important;
+  width: 7% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+#addButton {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
 }

@@ -1,3 +1,5 @@
+/** @format */
+
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services';
 import { Router } from '@angular/router';
@@ -12,6 +14,7 @@ import { UserForAuthorization } from '../../models/user.models';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
+  error: { state: boolean; message: string } = {} as { state: boolean; message: string };
 
   constructor(
     private authService: AuthService,
@@ -63,9 +66,19 @@ export class RegisterComponent implements OnInit {
         () =>
           this.authService.login$(user).subscribe(
             () => this.router.navigateByUrl('/home'),
-            error => console.error(error.message)
+            error => {
+              if (!this.error.state) {
+                this.error.state = !this.error.state;
+                this.error.message = error.message;
+              }
+            }
           ),
-        error => console.error(error.message)
+        error => {
+          if (!this.error.state) {
+            this.error.state = !this.error.state;
+            this.error.message = error.error;
+          }
+        }
       );
     }
   }

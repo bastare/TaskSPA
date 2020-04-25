@@ -1,3 +1,5 @@
+/** @format */
+
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -11,7 +13,7 @@ import { UserForAuthorization } from '../../models';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  state: boolean;
+  error: { state: boolean; message: string } = {} as { state: boolean; message: string };
 
   constructor(
     private authService: AuthService,
@@ -40,7 +42,10 @@ export class LoginComponent implements OnInit {
         },
         error => {
           if (error.status === 401) {
-            if (!this.state) this.state = !this.state;
+            if (!this.error.state) {
+              this.error.state = !this.error.state;
+              this.error.message = error.message;
+            }
           }
         }
       );

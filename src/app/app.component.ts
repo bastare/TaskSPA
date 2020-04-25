@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+/** @format */
+
+import { Component, VERSION } from '@angular/core';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { FileNameDialogComponent } from './file-name-dialog.component';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +11,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'TaskSPA';
+  version = VERSION;
 }

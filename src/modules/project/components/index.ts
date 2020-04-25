@@ -1,5 +1,7 @@
-import { TaskComponent } from './task/task.component';
+/** @format */
 
-export const components = [TaskComponent];
+import { UpdateTaskDialogComponent } from './update-task-dialog/updateTaskDialog.component';
 
-export * from './task/task.component';
+export const components = [UpdateTaskDialogComponent];
+
+export * from './update-task-dialog/updateTaskDialog.component';

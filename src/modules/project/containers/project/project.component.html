@@ -1,36 +1,115 @@
 <div class="container">
+
   <div class="row justify-content-center">
     <div class="card mb-3" style="width: 100%; margin-top: 50px;">
       <div class="card-header">Project name</div>
-      <div class="card-header">Header</div>
+      <div class="card-header">fun</div>
       <div class="card-body">
-        <table class="table table-sm">
-          <tbody>
-            <tr>
-              <td class="bg-warning">Task name</td>
-              <td style="width: 15%;">
-                <button>Done</button>
-                <button>Change</button>
-              </td>
-              <td style="width: 5%;">2020/20/20</td>
-            </tr>
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" cdkDropList
+          [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)">
 
-            <tr>
-              <td class="bg-success">Task name</td>
-              <td style="width: 15%;">
-                <button mat-flat-button>q</button>
-              </td>
-              <td style="width: 5%;">2020/20/20</td>
-            </tr>
-          </tbody>
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Pr. </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td class="draw-border" mat-cell *matCellDef=" let element"> {{element.name}}
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="deadline">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Deadline </th>
+            <td mat-cell *matCellDef="let element"> {{element.deadline | date:"dd:MM:yyyy"}}</td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button color="primary">
+                <mat-icon>favorite</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="update">
+            <th mat-header-cell *matHeaderCellDef mat-header> </th>
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element">
+              <button (click)="openFileDialog(element)" mat-icon-button color="primary">
+                <mat-icon>remove</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
       </div>
     </div>
   </div>
+
+
+
+  <!-- <div class="row justify-content-center">
+    <div class="card mb-3" style="width: 100%; margin-top: 50px;">
+      <div class="card-header">Project name</div>
+      <div class="card-header">Header</div>
+      <div class="card-body">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef=" let element"> {{element.name}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="deadline">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> deadline </th>
+            <td mat-cell *matCellDef="let element"> 2020/20/20</td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button color="primary">
+                <mat-icon>favorite</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="update">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button color="primary">
+                <mat-icon>update</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef=" displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </div>
+  </div> -->
+
+
+
+  <button (click)="test()" id="addButton" mat-fab color="primary">
+    <mat-icon>add</mat-icon>
+  </button>
+
 </div>
-
-<mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
-
-<button mat-icon-button>
-  <mat-icon>menu</mat-icon>
-</button>

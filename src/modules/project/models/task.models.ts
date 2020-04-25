@@ -1,9 +1,16 @@
+/** @format */
+
 export type Task = {
-  Name: string;
+  Task: string;
   Deadline: string;
   Status: Status;
 
   ProjectId: number;
+};
+
+export type TaskForUpdate = {
+  task: string;
+  deadline: Date;
 };
 
 enum Status {

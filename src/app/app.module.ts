@@ -50,16 +50,14 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-
-import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { FileNameDialogComponent } from './file-name-dialog.component';
 import { BidiModule } from '@angular/cdk/bidi';
 import { ObserversModule } from '@angular/cdk/observers';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PlatformModule } from '@angular/cdk/platform';
 
+import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 @NgModule({
   exports: [
     // CDK
@@ -112,7 +110,7 @@ import { PlatformModule } from '@angular/cdk/platform';
 export class MaterialModule {}
 
 @NgModule({
-  declarations: [AppComponent, FileNameDialogComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -126,6 +124,6 @@ export class MaterialModule {}
   ],
   providers: [AppComponent],
   bootstrap: [AppComponent],
-  entryComponents: [FileNameDialogComponent]
+  entryComponents: []
 })
 export class AppModule {}

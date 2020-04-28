@@ -1,115 +1,104 @@
-<div class="container">
+<div [hidden]="deleted" class="container">
 
   <div class="row justify-content-center">
-    <div class="card mb-3" style="width: 100%; margin-top: 50px;">
-      <div class="card-header">Project name</div>
-      <div class="card-header">fun</div>
-      <div class="card-body">
-        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" cdkDropList
-          [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)">
+    <div class="card-size card mb-3">
 
-          <ng-container matColumnDef="position">
+      <div class="card-header">
+        {{projectName}}
+
+        <button (click)="removeProject()" mat-icon-button color="primary">
+          <mat-icon color="warn">delete_outline</mat-icon>
+        </button>
+
+        <button (click)="updateProjectDialog()" mat-icon-button color="primary">
+          <mat-icon>create</mat-icon>
+        </button>
+
+      </div>
+
+      <div class="card-header">
+        <button (click)="createTaskDialog()" mat-icon-button color="primary">
+          <mat-icon>add_box</mat-icon>
+        </button>
+      </div>
+
+
+      <div class="card-body">
+        <div class="no-data" *ngIf="!dataSource?.data?.length"></div>
+        <table *ngIf=" dataSource?.data?.length" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8"
+          cdkDropList [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)">
+
+          <ng-container matColumnDef="state">
+            <th mat-header-cell *matHeaderCellDef mat-header> </th>
+            <td [ngClass]="{'done': element.status == 0 ? true : false, 'expired': element.status == 1 ? true : false}"
+              mat-cell *matCellDef="let element">
+              <button [disabled]="element.status == 0 ? true : false " (click)=" setDone(element)" mat-icon-button
+                color="primary">
+                <mat-icon>check_circle_outline</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="priority">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Pr. </th>
-            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+            <td [ngClass]="{'done': element.status == 0 ? true : false, 'expired': element.status == 1 ? true : false}"
+              cdkDragHandle mat-cell *matCellDef="let element"> {{element.priority}} </td>
           </ng-container>
 
 
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-            <td class="draw-border" mat-cell *matCellDef=" let element"> {{element.name}}
+            <td [ngClass]="{'done': element.status == 0 ? true : false, 'expired': element.status == 1 ? true : false}"
+              class="draw-border" mat-cell *matCellDef=" let element"> {{element.name}}
             </td>
           </ng-container>
 
 
           <ng-container matColumnDef="deadline">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Deadline </th>
-            <td mat-cell *matCellDef="let element"> {{element.deadline | date:"dd:MM:yyyy"}}</td>
+            <td [ngClass]="{'done': element.status == 0 ? true : false, 'expired': element.status == 1 ? true : false}"
+              mat-cell *matCellDef="let element">
+              <u> {{element.deadline | date:"dd:MM:yyyy"}}</u>
+            </td>
           </ng-container>
-
 
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-icon-button color="primary">
-                <mat-icon>favorite</mat-icon>
-              </button>
+            <td [ngClass]="{'done': element.status == 0 ? true : false, 'expired': element.status == 1 ? true : false}"
+              mat-cell *matCellDef="let element">
+              {{element.status | Status}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="update">
             <th mat-header-cell *matHeaderCellDef mat-header> </th>
             <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let element">
-              <button (click)="openFileDialog(element)" mat-icon-button color="primary">
-                <mat-icon>remove</mat-icon>
+            <td [ngClass]="{'done': element.status == 0 ? true : false, 'expired': element.status == 1 ? true : false}"
+              mat-cell *matCellDef="let element">
+              <button color="accent" [disabled]="element.status == 0 ? true : false "
+                (click)=" updateTaskDialog(element)" mat-icon-button color="primary">
+                <mat-icon>ballot</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="remove">
+            <th mat-header-cell *matHeaderCellDef mat-header> </th>
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td [ngClass]="{'done': element.status == 0 ? true : false, 'expired': element.status == 1 ? true : false}"
+              mat-cell *matCellDef="let element">
+              <button (click)="removeTask(element.id)" color="accent" [disabled]="element.status == 0 ? false : false "
+                (click)="null" mat-icon-button color="primary">
+                <mat-icon color="warn">delete_outline</mat-icon>
               </button>
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" cdkDrag [cdkDragData]="row"></tr>
         </table>
       </div>
     </div>
   </div>
-
-
-
-  <!-- <div class="row justify-content-center">
-    <div class="card mb-3" style="width: 100%; margin-top: 50px;">
-      <div class="card-header">Project name</div>
-      <div class="card-header">Header</div>
-      <div class="card-body">
-        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-
-
-          <ng-container matColumnDef="position">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
-            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-          </ng-container>
-
-
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-            <td mat-cell *matCellDef=" let element"> {{element.name}} </td>
-          </ng-container>
-
-
-          <ng-container matColumnDef="deadline">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> deadline </th>
-            <td mat-cell *matCellDef="let element"> 2020/20/20</td>
-          </ng-container>
-
-
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-icon-button color="primary">
-                <mat-icon>favorite</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="update">
-            <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-icon-button color="primary">
-                <mat-icon>update</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef=" displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-      </div>
-    </div>
-  </div> -->
-
-
-
-  <button (click)="test()" id="addButton" mat-fab color="primary">
-    <mat-icon>add</mat-icon>
-  </button>
 
 </div>

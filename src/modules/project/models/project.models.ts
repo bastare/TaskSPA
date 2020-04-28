@@ -1,6 +1,10 @@
+/** @format */
+
 import { Task } from './task.models';
 
-export interface Project {
-  Name: string;
-  Tasks: Task[];
-}
+export type Project = {
+  userId: number;
+  projectId: number;
+  projectName: string;
+  tasks: Task[];
+};

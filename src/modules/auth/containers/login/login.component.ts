@@ -44,7 +44,8 @@ export class LoginComponent implements OnInit {
           if (error.status === 401) {
             if (!this.error.state) {
               this.error.state = !this.error.state;
-              this.error.message = error.message;
+              this.error.message = error.error;
+              console.log(error);
             }
           }
         }

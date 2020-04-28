@@ -61,7 +61,7 @@ export class RegisterComponent implements OnInit {
   authorization() {
     if (this.registerForm.valid) {
       const user = this.registerForm.value as UserForAuthorization;
-
+      debugger;
       this.authService.register$(user).subscribe(
         () =>
           this.authService.login$(user).subscribe(
@@ -70,13 +70,17 @@ export class RegisterComponent implements OnInit {
               if (!this.error.state) {
                 this.error.state = !this.error.state;
                 this.error.message = error.message;
+
+                console.error(error);
               }
             }
           ),
         error => {
           if (!this.error.state) {
             this.error.state = !this.error.state;
-            this.error.message = error.error;
+            this.error.message = error.message;
+
+            console.error(error);
           }
         }
       );

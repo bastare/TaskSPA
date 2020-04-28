@@ -21,8 +21,12 @@ import { MaterialModule } from 'src/app/app.module';
 
 @NgModule({
   imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, MaterialModule],
-  providers: [...projectServices.services, ...projectGuards.guards],
-  declarations: [...projectContainers.containers, ...projectComponents.components],
+  providers: [...projectServices.pipes, ...projectServices.services, ...projectGuards.guards],
+  declarations: [
+    ...projectContainers.containers,
+    ...projectComponents.components,
+    ...projectServices.pipes
+  ],
   exports: [...projectContainers.containers, ...projectComponents.components],
   entryComponents: [...projectComponents.components]
 })

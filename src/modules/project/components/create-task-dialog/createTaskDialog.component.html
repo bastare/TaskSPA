@@ -1,9 +1,13 @@
 <form [formGroup]="form" (ngSubmit)="submit(form)">
-  <h1 mat-dialog-title>Update task</h1>
+  <h1 mat-dialog-title>Create task</h1>
   <mat-dialog-content>
 
     <mat-form-field appearance="fill">
       <input matInput formControlName="task" placeholder="Enter task" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <input matInput type="number" formControlName="priority" placeholder="Enter priority" />
     </mat-form-field>
 
 
@@ -17,7 +21,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button [disabled]="!form.valid" mat-button type="submit">Update</button>
+    <button [disabled]="!form.valid" mat-button type="submit">Create</button>
     <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
   </mat-dialog-actions>
 

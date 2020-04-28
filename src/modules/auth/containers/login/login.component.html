@@ -43,19 +43,13 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <div class="custom-control custom-checkbox">
-                <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
-                <label class="custom-control-label" for="rememberPasswordCheck">
-                  Remember password
-                </label>
-              </div>
-            </div>
+
             <div [hidden]="!error.state" class="alert alert-danger" role="alert">
               {{error.message}}
             </div>
             <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-              <button [disabled]="!loginForm.valid" class="btn btn-primary" type="submit">Login</button>
+              <button [disabled]="!loginForm.valid" class="btn btn-primary" style="width: 100%;"
+                type="submit">Login</button>
             </div>
           </form>
         </div>

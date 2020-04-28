@@ -1,3 +1,5 @@
+/** @format */
+
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -13,20 +15,17 @@ const routes: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
-    loadChildren: () =>
-      import('../modules/home/home-routing.module').then(m => m.HomeRoutingModule)
+    loadChildren: () => import('../modules/home/home-routing.module').then(m => m.HomeRoutingModule)
   },
   {
     path: 'auth',
-    loadChildren: () =>
-      import('../modules/auth/auth-routing.module').then(m => m.AuthRoutingModule)
+    loadChildren: () => import('../modules/auth/auth-routing.module').then(m => m.AuthRoutingModule)
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: '/home'
   }
-  // {
-  //   path: '**',
-  //   pathMatch: 'full',
-  //   loadChildren: () =>
-  //     import('../modules/error/error-routing.module').then(m => m.ErrorRoutingModule)
-  // }
 ];
 
 @NgModule({

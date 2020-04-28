@@ -1,72 +1,57 @@
 /** @format */
 
-/* tr {
-  border-color: white;
-  border-style: solid;
-  border-width: 2px;
+.container {
+  align-items: flex-start;
 }
 
-td {
-  border-radius: 100px;
-} */
+.no-data {
+  background: url(../../../../assets/no-data.jpeg) no-repeat center center;
+  height: 500px;
+  width: auto;
+}
 
-.draw-border {
-  -webkit-transition: color 0.25s 0.0833333333s;
-  transition: color 0.25s 0.0833333333s;
+card-container {
   position: relative;
 }
 
-.draw-border::before,
-.draw-border::after {
-  border: 0 solid transparent;
-  box-sizing: border-box;
-  content: '';
-  pointer-events: none;
-  position: absolute;
-  width: 0;
-  height: 0;
-  bottom: 0;
-  right: 0;
+.card-header button {
+  float: right;
 }
-.draw-border::before {
-  border-bottom-width: 4px;
-  border-left-width: 4px;
+
+#add {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 1rem;
+  align-self: flex-end;
 }
-.draw-border::after {
-  border-top-width: 4px;
-  border-right-width: 4px;
+
+/*  */
+
+.done {
+  background: -webkit-linear-gradient(top, rgb(255, 255, 255) 1%, rgb(183, 230, 193) 99%);
 }
-.draw-border:hover {
-  color: #5cd158;
-}
-.draw-border:hover::before,
-.draw-border:hover::after {
-  border-color: #5cd158;
-  -webkit-transition: border-color 0s, width 0.25s, height 0.25s;
-  transition: border-color 0s, width 0.25s, height 0.25s;
-  width: 100%;
-  height: 100%;
-}
-.draw-border:hover::before {
-  -webkit-transition-delay: 0s, 0s, 0.25s;
-  transition-delay: 0s, 0s, 0.25s;
-}
-.draw-border:hover::after {
-  -webkit-transition-delay: 0s, 0.25s, 0s;
-  transition-delay: 0s, 0.25s, 0s;
+
+.expired {
+  background: -webkit-linear-gradient(top, rgb(255, 255, 255) 1%, rgb(253, 0, 0) 99%);
 }
 
 table {
   width: 100%;
 }
 
-td.mat-cell {
-  padding: 20px 0;
-  border: none;
+.card-size {
+  width: 100%;
+  margin-top: 50px;
 }
 
 td.mat-cell {
-  text-align: center;
+  padding: 20px 0;
+  border: none;
 }
 
 .mat-column-name {
@@ -99,11 +84,4 @@ td.mat-cell {
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-}
-
-#addButton {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 50px;
 }

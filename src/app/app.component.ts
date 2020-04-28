@@ -2,7 +2,7 @@
 
 import { Component, VERSION } from '@angular/core';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { FileNameDialogComponent } from './file-name-dialog.component';
+
 import { filter } from 'rxjs/operators';
 
 @Component({

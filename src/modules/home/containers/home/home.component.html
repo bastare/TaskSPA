@@ -1,1 +1,9 @@
-<app-project></app-project>
+<button id="exit" (click)="auth.logOut()" mat-icon-button color="warn">
+    <mat-icon>exit_to_app</mat-icon>
+</button>
+
+<app-project *ngFor="let item of this.userData;" [data]='item'></app-project>
+
+<button id="add" (click)="createProjectDialog()" mat-fab color="primary">
+    <mat-icon>add</mat-icon>
+</button>

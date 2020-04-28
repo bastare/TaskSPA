@@ -14,6 +14,7 @@ import * as authGuards from './guards';
 import * as authServices from './services';
 import { ProjectModule } from '../project/project.module';
 import { MaterialModule } from 'src/app/app.module';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { MaterialModule } from 'src/app/app.module';
     ReactiveFormsModule,
     FormsModule,
     ProjectModule,
-    MaterialModule
+    MaterialModule,
+    NgxLoadingModule
   ],
   providers: [...authServices.services, ...authGuards.guards],
   declarations: [...authContainers.containers, ...authComponents.components],

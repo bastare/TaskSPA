@@ -13,8 +13,8 @@ export class CreateProjectDialogComponent implements OnInit {
   form: FormGroup;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<CreateProjectDialogComponent>,
+    public formBuilder: FormBuilder,
+    public dialogRef: MatDialogRef<CreateProjectDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 

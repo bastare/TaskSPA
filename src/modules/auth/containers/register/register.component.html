@@ -7,6 +7,7 @@
         </div>
 
         <div class="card-body">
+          <ngx-loading [show]="this.fetched" [config]="{backdropBackgroundColour: 'rgba(0,0,0,0.1)' }"></ngx-loading>
           <form [formGroup]="registerForm" (ngSubmit)="authorization()">
 
             <div class="form-group">

@@ -13,8 +13,14 @@ import { UserForAuthorization } from '../../models/user.models';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+  fetched: boolean;
+
   registerForm: FormGroup;
-  error: { state: boolean; message: string } = {} as { state: boolean; message: string };
+
+  error: { state: boolean; message: string } = {} as {
+    state: boolean;
+    message: string;
+  };
 
   constructor(
     private authService: AuthService,
@@ -60,8 +66,9 @@ export class RegisterComponent implements OnInit {
 
   authorization() {
     if (this.registerForm.valid) {
+      this.fetched = true;
       const user = this.registerForm.value as UserForAuthorization;
-      debugger;
+
       this.authService.register$(user).subscribe(
         () =>
           this.authService.login$(user).subscribe(
@@ -69,7 +76,7 @@ export class RegisterComponent implements OnInit {
             error => {
               if (!this.error.state) {
                 this.error.state = !this.error.state;
-                this.error.message = error.message;
+                this.error.message = error.error;
 
                 console.error(error);
               }
@@ -78,9 +85,10 @@ export class RegisterComponent implements OnInit {
         error => {
           if (!this.error.state) {
             this.error.state = !this.error.state;
-            this.error.message = error.message;
+            this.error.message = error.error;
 
             console.error(error);
+            this.fetched = false;
           }
         }
       );

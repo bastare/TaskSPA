@@ -8,6 +8,7 @@
         </div>
 
         <div class="card-body">
+          <ngx-loading [show]="this.fetched" [config]="{backdropBackgroundColour: 'rgba(0,0,0,0.1)' }"></ngx-loading>
           <form [formGroup]="loginForm" (ngSubmit)="authorize()">
             <div class="form-group">
               <label class="small mb-1" for="inputLogin">Login</label>

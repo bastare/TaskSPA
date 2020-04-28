@@ -15,9 +15,16 @@ import * as authGuards from './guards';
 
 /* Services */
 import * as authServices from './services';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgxLoadingModule
+  ],
   providers: [...authServices.services, ...authGuards.guards],
   declarations: [...authContainers.containers, ...authComponents.components],
   exports: [...authContainers.containers, ...authComponents.components]

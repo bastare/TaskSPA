@@ -29,7 +29,10 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Project } from '../../models';
 import { TaskService, ProjectService } from '../../services';
 import { DataService } from 'src/modules/home/services';
-import { CreateTaskDialogComponent, UpdateProjectDialogComponent } from '../../components';
+import {
+  CreateTaskDialogComponent,
+  UpdateProjectDialogComponent
+} from '../../components';
 import { AuthService } from 'src/modules/auth/services';
 
 @Component({
@@ -57,12 +60,16 @@ export class ProjectComponent implements OnInit, DoCheck {
   updateTaskDialogRef: MatDialogRef<UpdateTaskDialogComponent, TaskForUpdate>;
   createTaskDialogRef: MatDialogRef<CreateTaskDialogComponent, TaskForCreate>;
 
-  updateProjectDialogRef: MatDialogRef<UpdateProjectDialogComponent, ProjectForUpdate>;
+  updateProjectDialogRef: MatDialogRef<
+    UpdateProjectDialogComponent,
+    ProjectForUpdate
+  >;
 
   projectId: number;
   projectName: string;
 
   deleted: boolean;
+  fetched: any;
   //#endregion
 
   constructor(
@@ -101,12 +108,14 @@ export class ProjectComponent implements OnInit, DoCheck {
 
     this.updateTaskDialogRef.afterClosed().subscribe(result => {
       if (transfer) {
-        this.taskService.updateTask$(transfer.id, result.task, result.deadline).subscribe(
-          () => {
-            this._updateTableData();
-          },
-          error => console.error(error.message)
-        );
+        this.taskService
+          .updateTask$(transfer.id, result.task, result.deadline)
+          .subscribe(
+            () => {
+              this._updateTableData();
+            },
+            error => console.error(error.message)
+          );
       }
     });
   }
@@ -133,7 +142,6 @@ export class ProjectComponent implements OnInit, DoCheck {
 
     this.createTaskDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const val = result;
         this.taskService
           .createTask$(this.projectId, result.task, result.deadline, result.priority)
           .subscribe(
@@ -192,11 +200,15 @@ export class ProjectComponent implements OnInit, DoCheck {
   _updateTableData() {
     this.dataService.getData$().subscribe(
       res => {
-        this.data.tasks = (res as Project[]).find(x => x.projectId === this.projectId).tasks;
+        this.data.tasks = (res as Project[]).find(
+          x => x.projectId === this.projectId
+        ).tasks;
 
         this.dataSource.data = this.data.tasks;
       },
-      error => console.error(error.message)
+      error => {
+        console.error(error.message);
+      }
     );
   }
 }

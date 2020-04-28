@@ -1,9 +1,12 @@
-<button id="exit" (click)="auth.logOut()" mat-icon-button color="warn">
+<div>
+  <ngx-loading [show]=" !this.userData"></ngx-loading>
+  <button *ngIf="this.userData" id="exit" (click)="auth.logOut()" mat-icon-button color="warn">
     <mat-icon>exit_to_app</mat-icon>
-</button>
+  </button>
 
-<app-project *ngFor="let item of this.userData;" [data]='item'></app-project>
+  <app-project *ngFor="let item of this.userData;" [data]='item'></app-project>
 
-<button id="add" (click)="createProjectDialog()" mat-fab color="primary">
+  <button *ngIf="this.userData" id="add" (click)="createProjectDialog()" mat-fab color="primary">
     <mat-icon>add</mat-icon>
-</button>
+  </button>
+</div>

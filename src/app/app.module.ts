@@ -55,6 +55,8 @@ import { ObserversModule } from '@angular/cdk/observers';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PlatformModule } from '@angular/cdk/platform';
 
+import { NgxLoadingModule, ngxLoadingAnimationTypes } from 'ngx-loading';
+
 import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -120,7 +122,14 @@ export class MaterialModule {}
     FormsModule,
     BsDatepickerModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    NgxLoadingModule.forRoot({
+      animationType: ngxLoadingAnimationTypes.threeBounce,
+      backdropBackgroundColour: 'rgba(255, 255, 255, 0.1)',
+      primaryColour: '#1ea',
+      secondaryColour: '#f11',
+      tertiaryColour: '#1ee'
+    })
   ],
   providers: [AppComponent],
   bootstrap: [AppComponent],

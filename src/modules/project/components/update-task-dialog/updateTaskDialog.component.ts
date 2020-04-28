@@ -14,8 +14,8 @@ export class UpdateTaskDialogComponent implements OnInit {
   form: FormGroup;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<UpdateTaskDialogComponent>,
+    public formBuilder: FormBuilder,
+    public dialogRef: MatDialogRef<UpdateTaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 

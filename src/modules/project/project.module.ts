@@ -18,10 +18,22 @@ import * as projectGuards from './guards';
 import * as projectServices from './services';
 
 import { MaterialModule } from 'src/app/app.module';
+import { NgxLoadingComponent, NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, MaterialModule],
-  providers: [...projectServices.pipes, ...projectServices.services, ...projectGuards.guards],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MaterialModule,
+    NgxLoadingModule
+  ],
+  providers: [
+    ...projectServices.pipes,
+    ...projectServices.services,
+    ...projectGuards.guards
+  ],
   declarations: [
     ...projectContainers.containers,
     ...projectComponents.components,

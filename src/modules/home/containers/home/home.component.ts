@@ -17,8 +17,12 @@ import { ProjectService } from 'src/modules/project/services';
 })
 export class HomeComponent implements OnInit {
   userData: Project[];
+  fetched = false;
 
-  createProjectDialogRef: MatDialogRef<CreateProjectDialogComponent, ProjectForCreate>;
+  createProjectDialogRef: MatDialogRef<
+    CreateProjectDialogComponent,
+    ProjectForCreate
+  >;
 
   constructor(
     public auth: AuthService,

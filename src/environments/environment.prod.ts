@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'https://blooming-tundra-82011.herokuapp.com/'
 };

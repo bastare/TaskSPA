@@ -12,8 +12,14 @@ import { UserForAuthorization } from '../../models';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  fetched: boolean;
+
   loginForm: FormGroup;
-  error: { state: boolean; message: string } = {} as { state: boolean; message: string };
+
+  error: { state: boolean; message: string } = {} as {
+    state: boolean;
+    message: string;
+  };
 
   constructor(
     private authService: AuthService,
@@ -34,6 +40,8 @@ export class LoginComponent implements OnInit {
 
   authorize() {
     if (this.loginForm.valid) {
+      this.fetched = true;
+
       const user = this.loginForm.value as UserForAuthorization;
 
       this.authService.login$(user).subscribe(
@@ -48,6 +56,7 @@ export class LoginComponent implements OnInit {
               console.log(error);
             }
           }
+          this.fetched = false;
         }
       );
     }

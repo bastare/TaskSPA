@@ -26,6 +26,7 @@ export type TaskForUpdate = {
   task: string;
   deadline: Date;
 };
+
 export enum Status {
   Done,
   Expired,

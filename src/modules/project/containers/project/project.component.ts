@@ -33,16 +33,20 @@ import {
   CreateTaskDialogComponent,
   UpdateProjectDialogComponent
 } from '../../components';
-import { AuthService } from 'src/modules/auth/services';
 
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css']
 })
-export class ProjectComponent implements OnInit, DoCheck {
+export class ProjectComponent implements OnInit {
   //#region prop
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
+    this.sort = ms;
+    this.dataSource.sort = this.sort;
+  }
 
   @Input() data: Project;
 
@@ -69,7 +73,7 @@ export class ProjectComponent implements OnInit, DoCheck {
   projectName: string;
 
   deleted: boolean;
-  fetched: any;
+  fetched: boolean;
   //#endregion
 
   constructor(
@@ -79,31 +83,37 @@ export class ProjectComponent implements OnInit, DoCheck {
     private dataService: DataService
   ) {}
 
-  ngDoCheck(): void {
-    if (this.dataSource?.data?.length) {
-      const [checkingTask] = this.dataSource.data;
-      if (
-        new Date(checkingTask.deadline).getTime() < new Date().getTime() &&
-        checkingTask.status === Status.Onway
-      )
-        this.taskService.updateStatus$(checkingTask.id, Status.Expired).subscribe(
-          () => this._updateTableData(),
-          error => console.error(error.message)
-        );
-    }
-  }
-
   ngOnInit() {
+    this.setExpired(this.data.tasks);
+
     this.dataSource = new MatTableDataSource(this.data.tasks);
-    this.dataSource.sort = this.sort;
 
     this.projectId = this.data.projectId;
     this.projectName = this.data.projectName;
   }
 
+  private setExpired(tasks: Task[]): void {
+    tasks.forEach(checkingTask => {
+      if (
+        new Date(checkingTask.deadline).getTime() < new Date().getTime() &&
+        checkingTask.status === Status.Onway
+      ) {
+        this.taskService.updateStatus$(checkingTask.id, Status.Expired).subscribe(
+          () => {},
+          error => console.error(error.message)
+        );
+
+        checkingTask.status = Status.Expired;
+      }
+    });
+  }
+
   updateTaskDialog(transfer: Task) {
     this.updateTaskDialogRef = this.dialog.open(UpdateTaskDialogComponent, {
-      data: { task: transfer.name, deadline: transfer.deadline }
+      data: {
+        task: transfer.name,
+        deadline: transfer.deadline
+      }
     });
 
     this.updateTaskDialogRef.afterClosed().subscribe(result => {
@@ -112,7 +122,7 @@ export class ProjectComponent implements OnInit, DoCheck {
           .updateTask$(transfer.id, result.task, result.deadline)
           .subscribe(
             () => {
-              this._updateTableData();
+              this.updateTableData();
             },
             error => console.error(error.message)
           );
@@ -146,7 +156,7 @@ export class ProjectComponent implements OnInit, DoCheck {
           .createTask$(this.projectId, result.task, result.deadline, result.priority)
           .subscribe(
             () => {
-              this._updateTableData();
+              this.updateTableData();
             },
             error => console.error(error.message)
           );
@@ -172,20 +182,19 @@ export class ProjectComponent implements OnInit, DoCheck {
 
   setDone(element: Task) {
     this.taskService.updateStatus$(element.id, Status.Done).subscribe(
-      () => {
-        this._updateTableData();
-      },
+      () => {},
       error => console.error(error.message)
     );
+
+    element.status = Status.Done;
   }
 
   removeTask(id) {
     this.taskService.removeTask$(id).subscribe(
-      () => {
-        this._updateTableData();
-      },
+      () => {},
       error => console.error(error.message)
     );
+    this.dataSource.data = this.dataSource.data.filter(x => x.id !== id);
   }
 
   removeProject() {
@@ -197,12 +206,12 @@ export class ProjectComponent implements OnInit, DoCheck {
     );
   }
 
-  _updateTableData() {
+  private updateTableData() {
     this.dataService.getData$().subscribe(
       res => {
         this.data.tasks = (res as Project[]).find(
           x => x.projectId === this.projectId
-        ).tasks;
+        )?.tasks;
 
         this.dataSource.data = this.data.tasks;
       },

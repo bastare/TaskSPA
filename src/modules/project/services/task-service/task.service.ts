@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,15 @@ export class TaskService {
   userId: any;
 
   constructor(private http: HttpClient) {
-    this.userId = new JwtHelperService().decodeToken(localStorage.getItem('token')).nameid;
+    this.userId = new JwtHelperService().decodeToken(
+      localStorage.getItem('token')
+    ).nameid;
+  }
+
+  getTask$(id) {
+    return this.http.get(`${this.baseUrl}/${this.userId}/get/${id}`, {
+      responseType: 'json'
+    });
   }
 
   createTask$(projectId, name, deadline, priority) {

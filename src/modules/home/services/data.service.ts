@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/modules/auth/services';
 import { Observable } from 'rxjs';
 import { Project } from 'src/modules/project/models';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

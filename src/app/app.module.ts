@@ -60,6 +60,7 @@ import { NgxLoadingModule, ngxLoadingAnimationTypes } from 'ngx-loading';
 import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { JwtModule } from '@auth0/angular-jwt';
 @NgModule({
   exports: [
     // CDK
@@ -123,6 +124,12 @@ export class MaterialModule {}
     BsDatepickerModule,
     ReactiveFormsModule,
     MaterialModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('token'),
+        whitelistedDomains: ['localhost:5001', 'blooming-tundra-82011.herokuapp.com']
+      }
+    }),
     NgxLoadingModule.forRoot({
       animationType: ngxLoadingAnimationTypes.threeBounce,
       backdropBackgroundColour: 'rgba(255, 255, 255, 0.1)',

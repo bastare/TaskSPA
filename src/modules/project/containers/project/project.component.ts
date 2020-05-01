@@ -5,7 +5,9 @@ import {
   OnInit,
   ViewChild,
   Input,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  DoCheck,
+  OnChanges
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -32,7 +34,7 @@ import {
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css']
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit, DoCheck {
   //#region prop
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -75,6 +77,17 @@ export class ProjectComponent implements OnInit {
     private dataService: DataService,
     private changeDetectorRefs: ChangeDetectorRef
   ) {}
+
+  ngDoCheck(): void {
+    this.dataSource.data.forEach(x => {
+      if (
+        Status.Onway === x.status &&
+        new Date(x.deadline).getTime() < new Date().getTime()
+      ) {
+        x.status = Status.Expired;
+      }
+    });
+  }
 
   ngOnInit() {
     this._setExpired(this.data.tasks);
@@ -171,7 +184,6 @@ export class ProjectComponent implements OnInit {
   }
 
   dropTable(event: CdkDragDrop<Task[]>) {
-    debugger;
     const prevIndex = this.dataSource.data.findIndex(d => d === event.item.data);
 
     moveItemInArray(this.dataSource.data, prevIndex, event.currentIndex);
@@ -180,7 +192,6 @@ export class ProjectComponent implements OnInit {
       this.dataSource.data[index].priority = index;
 
     this.dataSource.data = this.dataSource.data;
-    debugger;
 
     this.taskService.updatePrioraty$(this.dataSource.data).subscribe(
       () => {},
@@ -197,7 +208,7 @@ export class ProjectComponent implements OnInit {
     element.status = Status.Done;
   }
 
-  removeTask(id) {
+  removeTask(id: number) {
     this.taskService.removeTask$(id).subscribe(
       () => {},
       error => console.error(error.message)

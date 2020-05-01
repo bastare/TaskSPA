@@ -4,26 +4,19 @@ import {
   Component,
   OnInit,
   ViewChild,
-  Inject,
   Input,
-  OnChanges,
-  SimpleChanges,
-  DoCheck
+  ChangeDetectorRef
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { filter } from 'rxjs/operators';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { UpdateTaskDialogComponent } from '../../components/update-task-dialog/updateTaskDialog.component';
-
 import {
   TaskForUpdate,
   Status,
   Task,
   TaskForCreate,
-  ProjectForUpdate,
-  ProjectForCreate
+  ProjectForUpdate
 } from '../../models/task.models';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Project } from '../../models';
@@ -63,7 +56,6 @@ export class ProjectComponent implements OnInit {
 
   updateTaskDialogRef: MatDialogRef<UpdateTaskDialogComponent, TaskForUpdate>;
   createTaskDialogRef: MatDialogRef<CreateTaskDialogComponent, TaskForCreate>;
-
   updateProjectDialogRef: MatDialogRef<
     UpdateProjectDialogComponent,
     ProjectForUpdate
@@ -80,11 +72,12 @@ export class ProjectComponent implements OnInit {
     private dialog: MatDialog,
     private taskService: TaskService,
     private projectService: ProjectService,
-    private dataService: DataService
+    private dataService: DataService,
+    private changeDetectorRefs: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.setExpired(this.data.tasks);
+    this._setExpired(this.data.tasks);
 
     this.dataSource = new MatTableDataSource(this.data.tasks);
 
@@ -92,7 +85,7 @@ export class ProjectComponent implements OnInit {
     this.projectName = this.data.projectName;
   }
 
-  private setExpired(tasks: Task[]): void {
+  private _setExpired(tasks: Task[]): void {
     tasks.forEach(checkingTask => {
       if (
         new Date(checkingTask.deadline).getTime() < new Date().getTime() &&
@@ -121,13 +114,19 @@ export class ProjectComponent implements OnInit {
         this.taskService
           .updateTask$(transfer.id, result.task, result.deadline)
           .subscribe(
-            () => {
-              this.updateTableData();
+            task => {
+              this._updateTask(task as Task);
             },
             error => console.error(error.message)
           );
       }
     });
+  }
+
+  private _updateTask(task: Task) {
+    this.dataSource.data = this.dataSource.data.map(x =>
+      x.id === task.id ? task : x
+    );
   }
 
   updateProjectDialog() {
@@ -155,13 +154,20 @@ export class ProjectComponent implements OnInit {
         this.taskService
           .createTask$(this.projectId, result.task, result.deadline, result.priority)
           .subscribe(
-            () => {
-              this.updateTableData();
+            task => {
+              this._addTaskToTable(task as Task);
             },
             error => console.error(error.message)
           );
       }
     });
+  }
+
+  private _addTaskToTable(task: Task) {
+    const tmpTask = [...this.dataSource.data];
+    tmpTask.push(task);
+
+    this.dataSource.data = tmpTask;
   }
 
   dropTable(event: CdkDragDrop<Task[]>) {
@@ -203,21 +209,6 @@ export class ProjectComponent implements OnInit {
         this.deleted = !this.deleted;
       },
       error => console.error(error.message)
-    );
-  }
-
-  private updateTableData() {
-    this.dataService.getData$().subscribe(
-      res => {
-        this.data.tasks = (res as Project[]).find(
-          x => x.projectId === this.projectId
-        )?.tasks;
-
-        this.dataSource.data = this.data.tasks;
-      },
-      error => {
-        console.error(error.message);
-      }
     );
   }
 }

@@ -171,16 +171,18 @@ export class ProjectComponent implements OnInit {
   }
 
   dropTable(event: CdkDragDrop<Task[]>) {
-    const prevIndex = this.data.tasks.findIndex(d => d === event.item.data);
+    debugger;
+    const prevIndex = this.dataSource.data.findIndex(d => d === event.item.data);
 
-    moveItemInArray(this.data.tasks, prevIndex, event.currentIndex);
+    moveItemInArray(this.dataSource.data, prevIndex, event.currentIndex);
 
     for (let index = 0; index < this.dataSource.filteredData.length; index++)
-      this.data.tasks[index].priority = index;
+      this.dataSource.data[index].priority = index;
 
-    this.dataSource.data = this.data.tasks;
+    this.dataSource.data = this.dataSource.data;
+    debugger;
 
-    this.taskService.updatePrioraty$(this.data.tasks).subscribe(
+    this.taskService.updatePrioraty$(this.dataSource.data).subscribe(
       () => {},
       error => console.error(error.message)
     );

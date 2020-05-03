@@ -3,7 +3,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthService } from 'src/modules/auth/services';
 
 @Injectable({
@@ -12,17 +11,20 @@ import { AuthService } from 'src/modules/auth/services';
 export class ProjectService {
   baseUrl = environment.apiUrl + 'project';
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private _http: HttpClient, private _auth: AuthService) {}
 
   removeProject$(id: number) {
-    return this.http.delete(`${this.baseUrl}/${this.auth.UserId}/remove/${id}`, {
-      responseType: 'json'
-    });
+    return this._http.delete(
+      `${this.baseUrl}/${this._auth.UserId}/remove/${id}`,
+      {
+        responseType: 'json'
+      }
+    );
   }
 
   updateProject$(id: number, name: string) {
-    return this.http.put(
-      `${this.baseUrl}/${this.auth.UserId}/update`,
+    return this._http.put(
+      `${this.baseUrl}/${this._auth.UserId}/update`,
       { id, name },
       {
         responseType: 'json'
@@ -31,8 +33,8 @@ export class ProjectService {
   }
 
   createProject$(name: string) {
-    return this.http.post(
-      `${this.baseUrl}/${this.auth.UserId}/create`,
+    return this._http.post(
+      `${this.baseUrl}/${this._auth.UserId}/create`,
       { name },
       {
         responseType: 'json'

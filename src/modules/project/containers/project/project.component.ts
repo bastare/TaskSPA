@@ -71,11 +71,9 @@ export class ProjectComponent implements OnInit, DoCheck {
   //#endregion
 
   constructor(
-    private dialog: MatDialog,
-    private taskService: TaskService,
-    private projectService: ProjectService,
-    private dataService: DataService,
-    private changeDetectorRefs: ChangeDetectorRef
+    private _dialog: MatDialog,
+    private _taskService: TaskService,
+    private _projectService: ProjectService
   ) {}
 
   ngDoCheck(): void {
@@ -85,12 +83,17 @@ export class ProjectComponent implements OnInit, DoCheck {
         new Date(x.deadline).getTime() < new Date().getTime()
       ) {
         x.status = Status.Expired;
+      } else if (
+        Status.Expired === x.status &&
+        new Date(x.deadline).getTime() > new Date().getTime()
+      ) {
+        x.status = Status.Onway;
       }
     });
   }
 
   ngOnInit() {
-    this._setExpired(this.data.tasks);
+    this._setStatus(this.data.tasks);
 
     this.dataSource = new MatTableDataSource(this.data.tasks);
 
@@ -98,24 +101,36 @@ export class ProjectComponent implements OnInit, DoCheck {
     this.projectName = this.data.projectName;
   }
 
-  private _setExpired(tasks: Task[]): void {
+  private _setStatus(tasks: Task[]): void {
     tasks.forEach(checkingTask => {
       if (
         new Date(checkingTask.deadline).getTime() < new Date().getTime() &&
         checkingTask.status === Status.Onway
       ) {
-        this.taskService.updateStatus$(checkingTask.id, Status.Expired).subscribe(
-          () => {},
-          error => console.error(error.message)
-        );
+        this._taskService
+          .updateStatus$(checkingTask.id, Status.Expired)
+          .subscribe(
+            () => {},
+            error => console.error(error.message)
+          );
 
         checkingTask.status = Status.Expired;
+      } else if (
+        new Date(checkingTask.deadline).getTime() > new Date().getTime() &&
+        checkingTask.status === Status.Expired
+      ) {
+        this._taskService
+          .updateStatus$(checkingTask.id, Status.Onway)
+          .subscribe(
+            () => {},
+            error => console.error(error.message)
+          );
       }
     });
   }
 
   updateTaskDialog(transfer: Task) {
-    this.updateTaskDialogRef = this.dialog.open(UpdateTaskDialogComponent, {
+    this.updateTaskDialogRef = this._dialog.open(UpdateTaskDialogComponent, {
       data: {
         task: transfer.name,
         deadline: transfer.deadline
@@ -124,7 +139,7 @@ export class ProjectComponent implements OnInit, DoCheck {
 
     this.updateTaskDialogRef.afterClosed().subscribe(result => {
       if (transfer) {
-        this.taskService
+        this._taskService
           .updateTask$(transfer.id, result.task, result.deadline)
           .subscribe(
             task => {
@@ -143,29 +158,39 @@ export class ProjectComponent implements OnInit, DoCheck {
   }
 
   updateProjectDialog() {
-    this.updateProjectDialogRef = this.dialog.open(UpdateProjectDialogComponent, {
-      data: { task: this.projectName }
-    });
+    this.updateProjectDialogRef = this._dialog.open(
+      UpdateProjectDialogComponent,
+      {
+        data: { task: this.projectName }
+      }
+    );
 
     this.updateProjectDialogRef.afterClosed().subscribe(result => {
-      this.projectService.updateProject$(this.projectId, result.task).subscribe(
-        () => {
-          this.projectName = result.task;
-        },
-        error => console.error(error.message)
-      );
+      this._projectService
+        .updateProject$(this.projectId, result.task)
+        .subscribe(
+          () => {
+            this.projectName = result.task;
+          },
+          error => console.error(error.message)
+        );
     });
   }
 
   createTaskDialog() {
-    this.createTaskDialogRef = this.dialog.open(CreateTaskDialogComponent, {
+    this.createTaskDialogRef = this._dialog.open(CreateTaskDialogComponent, {
       data: { task: '', deadline: '', priority: '' }
     });
 
     this.createTaskDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.taskService
-          .createTask$(this.projectId, result.task, result.deadline, result.priority)
+        this._taskService
+          .createTask$(
+            this.projectId,
+            result.task,
+            result.deadline,
+            result.priority
+          )
           .subscribe(
             task => {
               this._addTaskToTable(task as Task);
@@ -184,7 +209,9 @@ export class ProjectComponent implements OnInit, DoCheck {
   }
 
   dropTable(event: CdkDragDrop<Task[]>) {
-    const prevIndex = this.dataSource.data.findIndex(d => d === event.item.data);
+    const prevIndex = this.dataSource.data.findIndex(
+      d => d === event.item.data
+    );
 
     moveItemInArray(this.dataSource.data, prevIndex, event.currentIndex);
 
@@ -193,14 +220,14 @@ export class ProjectComponent implements OnInit, DoCheck {
 
     this.dataSource.data = this.dataSource.data;
 
-    this.taskService.updatePrioraty$(this.dataSource.data).subscribe(
+    this._taskService.updatePrioraty$(this.dataSource.data).subscribe(
       () => {},
       error => console.error(error.message)
     );
   }
 
   setDone(element: Task) {
-    this.taskService.updateStatus$(element.id, Status.Done).subscribe(
+    this._taskService.updateStatus$(element.id, Status.Done).subscribe(
       () => {},
       error => console.error(error.message)
     );
@@ -209,7 +236,7 @@ export class ProjectComponent implements OnInit, DoCheck {
   }
 
   removeTask(id: number) {
-    this.taskService.removeTask$(id).subscribe(
+    this._taskService.removeTask$(id).subscribe(
       () => {},
       error => console.error(error.message)
     );
@@ -217,7 +244,7 @@ export class ProjectComponent implements OnInit, DoCheck {
   }
 
   removeProject() {
-    this.projectService.removeProject$(this.projectId).subscribe(
+    this._projectService.removeProject$(this.projectId).subscribe(
       () => {
         this.deleted = !this.deleted;
       },

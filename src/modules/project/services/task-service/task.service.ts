@@ -15,20 +15,25 @@ export class TaskService {
 
   userId: any;
 
-  constructor(private http: HttpClient) {
+  constructor(private _http: HttpClient) {
     this.userId = new JwtHelperService().decodeToken(
       localStorage.getItem('token')
     ).nameid;
   }
 
   getTask$(id: number) {
-    return this.http.get(`${this.baseUrl}/${this.userId}/get/${id}`, {
+    return this._http.get(`${this.baseUrl}/${this.userId}/get/${id}`, {
       responseType: 'json'
     });
   }
 
-  createTask$(projectId: number, name: string, deadline: Date, priority: number) {
-    return this.http.post(
+  createTask$(
+    projectId: number,
+    name: string,
+    deadline: Date,
+    priority: number
+  ) {
+    return this._http.post(
       `${this.baseUrl}/${this.userId}/create/${projectId}`,
       { name, deadline, priority },
       {
@@ -38,7 +43,7 @@ export class TaskService {
   }
 
   updateTask$(id: number, name: string, deadline: Date) {
-    return this.http.put(
+    return this._http.put(
       `${this.baseUrl}/${this.userId}/update`,
       { id, name, deadline },
       {
@@ -48,7 +53,7 @@ export class TaskService {
   }
 
   updateStatus$(id: number, status: Status) {
-    return this.http.put(
+    return this._http.put(
       `${this.baseUrl}/${this.userId}/updateStatus`,
       { id, status },
       {
@@ -58,7 +63,7 @@ export class TaskService {
   }
 
   updatePrioraty$(tasks: Task[]) {
-    return this.http.put(
+    return this._http.put(
       `${this.baseUrl}/${this.userId}/updatePrioraty`,
       { tasks },
       {
@@ -68,7 +73,7 @@ export class TaskService {
   }
 
   removeTask$(id) {
-    return this.http.delete(`${this.baseUrl}/${this.userId}/remove/${id}`, {
+    return this._http.delete(`${this.baseUrl}/${this.userId}/remove/${id}`, {
       responseType: 'json'
     });
   }

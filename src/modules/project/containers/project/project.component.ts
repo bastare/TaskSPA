@@ -66,8 +66,8 @@ export class ProjectComponent implements OnInit, DoCheck {
   projectId: number;
   projectName: string;
 
-  deleted: boolean;
-  fetched: boolean;
+  isDeleted: boolean;
+  isFetched: boolean;
   //#endregion
 
   constructor(
@@ -236,18 +236,19 @@ export class ProjectComponent implements OnInit, DoCheck {
   }
 
   removeTask(id: number) {
+    this.dataSource.data = this.dataSource.data.filter(x => x.id !== id);
+
     this._taskService.removeTask$(id).subscribe(
       () => {},
       error => console.error(error.message)
     );
-    this.dataSource.data = this.dataSource.data.filter(x => x.id !== id);
   }
 
   removeProject() {
+    this.isDeleted = true;
+
     this._projectService.removeProject$(this.projectId).subscribe(
-      () => {
-        this.deleted = !this.deleted;
-      },
+      () => {},
       error => console.error(error.message)
     );
   }

@@ -13,7 +13,7 @@ import { CdkStepperModule } from '@angular/cdk/stepper';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -54,13 +54,16 @@ import { BidiModule } from '@angular/cdk/bidi';
 import { ObserversModule } from '@angular/cdk/observers';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PlatformModule } from '@angular/cdk/platform';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { NgxLoadingModule, ngxLoadingAnimationTypes } from 'ngx-loading';
 
 import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { JwtModule } from '@auth0/angular-jwt';
+import { LoaderService } from './shared/services/loader.service';
+import { LoaderInterceptor } from './shared/interceptors/loader.interceptor';
+
 @NgModule({
   exports: [
     // CDK
@@ -127,7 +130,10 @@ export class MaterialModule {}
     JwtModule.forRoot({
       config: {
         tokenGetter: () => localStorage.getItem('token'),
-        whitelistedDomains: ['localhost:5001', 'blooming-tundra-82011.herokuapp.com']
+        whitelistedDomains: [
+          'localhost:5001',
+          'blooming-tundra-82011.herokuapp.com'
+        ]
       }
     }),
     NgxLoadingModule.forRoot({
@@ -138,7 +144,11 @@ export class MaterialModule {}
       tertiaryColour: '#1ee'
     })
   ],
-  providers: [AppComponent],
+  providers: [
+    AppComponent,
+    LoaderService,
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
   entryComponents: []
 })

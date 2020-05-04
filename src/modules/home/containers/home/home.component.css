@@ -20,3 +20,9 @@
   bottom: 1rem;
   align-self: flex-end;
 }
+
+#loader {
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+}

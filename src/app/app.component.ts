@@ -1,9 +1,6 @@
 /** @format */
 
 import { Component, VERSION } from '@angular/core';
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',

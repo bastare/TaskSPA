@@ -15,7 +15,7 @@ import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { CreateProjectDialogComponent } from '../../../project/components/create-project-dialog/createProjectDialog.component';
 import { ProjectForCreate } from 'src/modules/project/models/task.models';
 import { ProjectService } from 'src/modules/project/services';
-import { LoaderService } from 'src/app/shared/services/loader.service';
+import { LoaderService } from 'src/app/shared/interceptors/services/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -51,8 +51,8 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._dataService.getData$(this._auth.UserId).subscribe(res => {
-      this.userData = res as Project[];
+    this._dataService.getData$(this._auth.UserId, 2, 3).subscribe(res => {
+      this.userData = res.result;
     });
   }
 
@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit {
         this._projectService.createProject$(result.task).subscribe(
           () => {
             this._dataService.getData$(this._auth.UserId).subscribe(res => {
-              this.userData = res as Project[];
+              this.userData = res.result;
             });
           },
           error => alert(error.message)

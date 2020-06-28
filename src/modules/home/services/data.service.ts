@@ -13,34 +13,30 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  baseUrl = environment.apiUrl + 'data';
-  userId: number;
+  private _baseUrl = environment.apiUrl + 'data';
+  private _userId: number;
 
   constructor(private _http: HttpClient, private _auth: AuthService) {
-    this.userId = _auth.UserId;
+    this._userId = _auth.UserId;
   }
 
-  getData$(id: number = this.userId, page?, itemsPerPage?): Observable<PaginatedResult<Project[]>> {
+  getData$(id: number = this._userId, page?: string, itemsPerPage?: string): Observable<PaginatedResult<Project[]>> {
     const paginationResult = new PaginatedResult<Project[]>();
 
-    let params = new HttpParams();
+    const params = new HttpParams()
+      .set('pageNumber', page ?? '10')
+      .set('pageSize',   itemsPerPage ?? '4')
 
-    if(page != null && itemsPerPage != null) {
-      params = params.append('pageNumber', page);
-      params = params.append('pageSize', itemsPerPage);
-    }
-
-    return this._http.get(`${this.baseUrl}/${id}/getData`, {
+    return this._http.get(`${this._baseUrl}/${id}/getData`, {
       responseType: 'json',
       observe:'response',
       params
     }).pipe(
       map(response => {
-        debugger
         paginationResult.result = response.body as Project[];
 
-        if(response.headers.get('Pagination') != null){
-          paginationResult.pagination = JSON.parse(response.headers.get('Pagination'))
+        if(response.headers.get('X-Pagination') != null){
+          paginationResult.pagination = JSON.parse(response.headers.get('X-Pagination'))
         }
 
         return paginationResult;

@@ -15,6 +15,7 @@ import * as authServices from './services';
 import { ProjectModule } from '../project/project.module';
 import { MaterialModule } from 'src/app/app.module';
 import { NgxLoadingModule } from 'ngx-loading';
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { NgxLoadingModule } from 'ngx-loading';
     FormsModule,
     ProjectModule,
     MaterialModule,
-    NgxLoadingModule
+    NgxLoadingModule,
+    InfiniteScrollModule
   ],
   providers: [...authServices.services, ...authGuards.guards],
   declarations: [...authContainers.containers, ...authComponents.components],

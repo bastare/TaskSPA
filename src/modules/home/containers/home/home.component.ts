@@ -5,7 +5,6 @@ import { AuthService } from 'src/modules/auth/services';
 import { DataService } from '../../services';
 
 import {
-  NgxLoadingModule,
   ngxLoadingAnimationTypes,
   INgxLoadingConfig
 } from 'ngx-loading';
@@ -43,7 +42,7 @@ export class HomeComponent implements OnInit {
   };
 
   constructor(
-    public _auth: AuthService,
+    private _auth: AuthService,
     private _dataService: DataService,
     private _dialog: MatDialog,
     private _projectService: ProjectService,
@@ -51,10 +50,12 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._dataService.getData$(this._auth.UserId, 2, 3).subscribe(res => {
+    // TODO: Add full func
+    this._dataService.getData$(this._auth.UserId).subscribe(res => {
       this.userData = res.result;
     });
   }
+
 
   createProjectDialog() {
     this.createProjectDialogRef = this._dialog.open(

@@ -16,16 +16,17 @@ export class DataService {
   private _baseUrl = environment.apiUrl + 'data';
   private _userId: number;
 
+
   constructor(private _http: HttpClient, private _auth: AuthService) {
     this._userId = _auth.UserId;
   }
 
-  getData$(id: number = this._userId, page?: string, itemsPerPage?: string): Observable<PaginatedResult<Project[]>> {
+  getData$(id: number = this._userId, itemsPerPage?: number, page?: number): Observable<PaginatedResult<Project[]>> {
     const paginationResult = new PaginatedResult<Project[]>();
 
     const params = new HttpParams()
-      .set('pageNumber', page ?? '10')
-      .set('pageSize',   itemsPerPage ?? '4')
+      .set('pageNumber', page?.toString() ?? '1')
+      .set('pageSize',   itemsPerPage?.toString() ?? '3')
 
     return this._http.get(`${this._baseUrl}/${id}/getData`, {
       responseType: 'json',

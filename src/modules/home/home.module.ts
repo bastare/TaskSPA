@@ -16,6 +16,13 @@ import { ProjectModule } from '../project/project.module';
 import { MaterialModule } from 'src/app/app.module';
 import { NgxLoadingModule } from 'ngx-loading';
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { AdminInfoComponent } from './components/admin-info/admin-info.component';
 
 @NgModule({
   imports: [
@@ -26,10 +33,16 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
     ProjectModule,
     MaterialModule,
     NgxLoadingModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule
   ],
   providers: [...authServices.services, ...authGuards.guards],
-  declarations: [...authContainers.containers, ...authComponents.components],
+  declarations: [...authContainers.containers, ...authComponents.components, AdminInfoComponent],
   exports: [...authContainers.containers, ...authComponents.components]
 })
 export class HomeModule {}

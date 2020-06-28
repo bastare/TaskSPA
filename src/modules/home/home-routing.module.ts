@@ -9,8 +9,6 @@ import * as homeContainers from './containers';
 
 import * as homeGuards from './guards';
 
-import { DataResolve } from './services/data.resolve';
-import { TaskResolve } from '../project/services/task-service/task.resolve';
 
 export const ROUTES: Routes = [
   {

@@ -1,21 +1,12 @@
-<div>
-    <ngx-loading [show]="!this.userData" [config]="{ fullScreenBackdrop: true }"></ngx-loading>
 
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav [mode]="'push'">
 
-    <button *ngIf="this.userData" id="exit" (click)="auth.logOut()" mat-icon-button="mat-icon-button" color="warn">
-        <mat-icon>exit_to_app</mat-icon>
-    </button>
+  </mat-sidenav>
 
-    <div infiniteScroll="infiniteScroll" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150" (scrolled)="accumulateProjects()">
-        <app-project *ngFor="let item of this.userData" [data]="item"></app-project>
-    </div>
+  <mat-sidenav-content id="content">
+    <button mat-button (click)="sidenav.toggle()">Toggle</button>
 
-
-    <button *ngIf="this.userData" id="add" (click)="createProjectDialog()" mat-fab="mat-fab" color="primary">
-        <mat-icon>add</mat-icon>
-    </button>
-    <div id="loader">
-        <ngx-loading [show]="loaded | async" [config]="config"></ngx-loading>
-    </div>
-</div>
-
+    <app-content></app-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

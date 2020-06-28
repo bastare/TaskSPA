@@ -23,7 +23,6 @@ import {
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Project } from '../../models';
 import { TaskService, ProjectService } from '../../services';
-import { DataService } from 'src/modules/home/services';
 import {
   CreateTaskDialogComponent,
   UpdateProjectDialogComponent

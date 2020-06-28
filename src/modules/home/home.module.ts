@@ -22,7 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { AdminInfoComponent } from './components/admin-info/admin-info.component';
+import { ContentComponent } from './components/content/content.component';
 
 @NgModule({
   imports: [
@@ -42,7 +42,7 @@ import { AdminInfoComponent } from './components/admin-info/admin-info.component
     MatListModule
   ],
   providers: [...authServices.services, ...authGuards.guards],
-  declarations: [...authContainers.containers, ...authComponents.components, AdminInfoComponent],
+  declarations: [...authContainers.containers, ...authComponents.components, ContentComponent],
   exports: [...authContainers.containers, ...authComponents.components]
 })
 export class HomeModule {}

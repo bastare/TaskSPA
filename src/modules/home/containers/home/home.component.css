@@ -1,28 +1,15 @@
-/** @format */
-
-#exit {
-  float: right;
-
-  position: -webkit-sticky;
-  position: sticky;
-  top: 1rem;
-  right: 1rem;
+.example-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
-#add {
+.example-radio-group {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 50px;
-
-  position: -webkit-sticky;
-  position: sticky;
-  bottom: 1rem;
-  align-self: flex-end;
+  border: 1px solid #555;
+  margin: 20px;
+  padding: 10px;
 }
 
-#loader {
-  position: fixed;
-  bottom: 5%;
-  right: 5%;
-}

@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/public_api';
 import { UserForAuthorization } from '../../models/user.models';
 
 @Component({

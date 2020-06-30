@@ -15,9 +15,6 @@ export const ROUTES: Routes = [
     path: 'home',
     canActivate: [],
     component: homeContainers.HomeComponent
-    // resolve: {
-    //   dataResolver: DataResolve
-    // }
   }
 ];
 

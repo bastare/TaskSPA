@@ -9,13 +9,17 @@ import { AuthService } from 'src/modules/auth/services';
   providedIn: 'root'
 })
 export class ProjectService {
-  baseUrl = environment.apiUrl + 'project';
+  private _baseUrl: string;
+  private _userId: number;
 
-  constructor(private _http: HttpClient, private _auth: AuthService) {}
+  constructor(private _http: HttpClient, private _auth: AuthService) {
+    this._baseUrl  = environment.apiUrl + 'project';
+    this._userId = _auth.getUserId();
+  }
 
   removeProject$(id: number) {
     return this._http.delete(
-      `${this.baseUrl}/${this._auth.UserId}/remove/${id}`,
+      `${this._baseUrl}/${this._userId}/remove/${id}`,
       {
         responseType: 'json'
       }
@@ -24,7 +28,7 @@ export class ProjectService {
 
   updateProject$(id: number, name: string) {
     return this._http.put(
-      `${this.baseUrl}/${this._auth.UserId}/update`,
+      `${this._baseUrl}/${this._userId}/update`,
       { id, name },
       {
         responseType: 'json'
@@ -34,7 +38,7 @@ export class ProjectService {
 
   createProject$(name: string) {
     return this._http.post(
-      `${this.baseUrl}/${this._auth.UserId}/create`,
+      `${this._baseUrl}/${this._userId}/create`,
       { name },
       {
         responseType: 'json'

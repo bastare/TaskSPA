@@ -14,6 +14,6 @@ export class DataResolve implements Resolve<any> {
   constructor(private _dataService: DataService, private _auth: AuthService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
-    return this._dataService.getData$(this._auth.UserId);
+    return this._dataService.getData$(this._auth.getUserId());
   }
 }

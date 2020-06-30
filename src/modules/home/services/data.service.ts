@@ -18,7 +18,7 @@ export class DataService {
 
 
   constructor(private _http: HttpClient, private _auth: AuthService) {
-    this._userId = _auth.UserId;
+    this._userId = _auth.getUserId();
   }
 
   getData$(id: number = this._userId, itemsPerPage?: number, page?: number): Observable<PaginatedResult<Project[]>> {

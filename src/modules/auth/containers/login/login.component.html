@@ -8,21 +8,21 @@
         </div>
 
         <div class="card-body">
-          <ngx-loading [show]="this.fetched" [config]="{backdropBackgroundColour: 'rgba(0,0,0,0.1)' }"></ngx-loading>
+          <ngx-loading [show]="this.loaded | async" [config]="{backdropBackgroundColour: 'rgba(0,0,0,0.1)' }"></ngx-loading>
           <form [formGroup]="loginForm" (ngSubmit)="authorize()">
             <div class="form-group">
               <label class="small mb-1" for="inputLogin">Login</label>
               <input class="form-control py-4" id="inputLogin"
-                [ngClass]="{'is-invalid': loginForm.get('login').errors && loginForm.get('login').touched}"
-                formControlName="login" type="email" placeholder="Enter login" />
+                [ngClass]="{'is-invalid': loginForm.get('userName').errors && loginForm.get('userName').touched}"
+                formControlName="userName" type="email" placeholder="Enter login" />
 
               <div class="invalid-feedback"
-                *ngIf="loginForm.get('login').hasError('required') && loginForm.get('login').touched">
+                *ngIf="loginForm.get('userName').hasError('required') && loginForm.get('userName').touched">
                 Login is required
               </div>
 
               <div class="invalid-feedback"
-                *ngIf="loginForm.get('login').hasError('pattern') && loginForm.get('login').touched">
+                *ngIf="loginForm.get('userName').hasError('pattern') && loginForm.get('userName').touched">
                 Login invalid
               </div>
             </div>

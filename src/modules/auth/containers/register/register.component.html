@@ -7,32 +7,32 @@
         </div>
 
         <div class="card-body">
-          <ngx-loading [show]="this.fetched" [config]="{backdropBackgroundColour: 'rgba(0,0,0,0.1)' }"></ngx-loading>
+          <ngx-loading [show]="this.loaded | async" [config]="{backdropBackgroundColour: 'rgba(0,0,0,0.1)' }"></ngx-loading>
           <form [formGroup]="registerForm" (ngSubmit)="authorization()">
 
             <div class="form-group">
               <label class="small mb-1" for="login">Login</label>
               <input class="form-control py-4"
-                [ngClass]="{'is-invalid': registerForm.get('login').errors && registerForm.get('login').touched}"
-                formControlName="login" type="text" placeholder="Enter login" />
+                [ngClass]="{'is-invalid': registerForm.get('userName').errors && registerForm.get('userName').touched}"
+                formControlName="userName" type="text" placeholder="Enter login" />
 
               <div class="invalid-feedback"
-                *ngIf="registerForm.get('login').hasError('required') && registerForm.get('login').touched">
+                *ngIf="registerForm.get('userName').hasError('required') && registerForm.get('userName').touched">
                 Login is required
               </div>
 
               <div class="invalid-feedback"
-                *ngIf="registerForm.get('login').hasError('minlength') && registerForm.get('login').touched">
+                *ngIf="registerForm.get('userName').hasError('minlength') && registerForm.get('userName').touched">
                 Login must be at least 3 char
               </div>
 
               <div class="invalid-feedback"
-                *ngIf="registerForm.get('login').hasError('maxlength') && registerForm.get('login').touched">
+                *ngIf="registerForm.get('userName').hasError('maxlength') && registerForm.get('userName').touched">
                 Login must be at least 16 char
               </div>
 
               <div class="invalid-feedback"
-                *ngIf="registerForm.get('login').hasError('pattern') && registerForm.get('login').touched">
+                *ngIf="registerForm.get('userName').hasError('pattern') && registerForm.get('userName').touched">
                 Login invalid
               </div>
             </div>
@@ -72,8 +72,8 @@
                 <div class="form-group">
                   <label class="small mb-1" for="confirmPassword">Confirm Password</label>
                   <input class="form-control py-4" [ngClass]="{'is-invalid': registerForm.get('confirmPassword').errors
-                    && registerForm.get('confirmPassword').touched 
-                    || registerForm.get('password').touched 
+                    && registerForm.get('confirmPassword').touched
+                    || registerForm.get('password').touched
                     && registerForm.hasError('mismatch')}" formControlName="confirmPassword" type="password"
                     placeholder="Confirm password" />
                   <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword').hasError('mismatch')

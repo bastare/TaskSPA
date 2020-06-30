@@ -16,7 +16,7 @@ import { LoaderService } from "src/app/shared/interceptors/services/loader.servi
 @Component({
   selector: "app-content",
   templateUrl: "./content.component.html",
-  styleUrls: ["./content.component.css"]
+  styleUrls: ["./content.component.css"],
 })
 export class ContentComponent implements OnInit {
   userData: Project[];
@@ -81,7 +81,7 @@ export class ContentComponent implements OnInit {
 
   private _load_projects() {
     this._dataService
-      .getData$(this.auth.UserId, this._projectsNumbers)
+      .getData$(this.auth.getUserId(), this._projectsNumbers)
       .subscribe((result) => {
         this.userData = result.result;
       });

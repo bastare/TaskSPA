@@ -3,26 +3,23 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { map } from 'rxjs/operators';
 import { Task, Status } from '../../models/task.models';
+import { AuthService } from 'src/modules/auth/services';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  baseUrl = environment.apiUrl + 'task';
+  private _baseUrl: string;
+  private _userId: number;
 
-  userId: any;
-
-  constructor(private _http: HttpClient) {
-    this.userId = new JwtHelperService().decodeToken(
-      localStorage.getItem('token')
-    ).nameid;
+  constructor(private _http: HttpClient, private _auth: AuthService) {
+    this._baseUrl  = environment.apiUrl + 'task';
+    this._userId = _auth.getUserId();
   }
 
   getTask$(id: number) {
-    return this._http.get(`${this.baseUrl}/${this.userId}/get/${id}`, {
+    return this._http.get(`${this._baseUrl}/${this._userId}/get/${id}`, {
       responseType: 'json'
     });
   }
@@ -34,7 +31,7 @@ export class TaskService {
     priority: number
   ) {
     return this._http.post(
-      `${this.baseUrl}/${this.userId}/create/${projectId}`,
+      `${this._baseUrl}/${this._userId}/create/${projectId}`,
       { name, deadline, priority },
       {
         responseType: 'json'
@@ -44,7 +41,7 @@ export class TaskService {
 
   updateTask$(id: number, name: string, deadline: Date) {
     return this._http.put(
-      `${this.baseUrl}/${this.userId}/update`,
+      `${this._baseUrl}/${this._userId}/update`,
       { id, name, deadline },
       {
         responseType: 'json'
@@ -54,7 +51,7 @@ export class TaskService {
 
   updateStatus$(id: number, status: Status) {
     return this._http.put(
-      `${this.baseUrl}/${this.userId}/updateStatus`,
+      `${this._baseUrl}/${this._userId}/updateStatus`,
       { id, status },
       {
         responseType: 'json'
@@ -64,7 +61,7 @@ export class TaskService {
 
   updatePrioraty$(tasks: Task[]) {
     return this._http.put(
-      `${this.baseUrl}/${this.userId}/updatePrioraty`,
+      `${this._baseUrl}/${this._userId}/updatePrioraty`,
       { tasks },
       {
         responseType: 'json'
@@ -73,7 +70,7 @@ export class TaskService {
   }
 
   removeTask$(id) {
-    return this._http.delete(`${this.baseUrl}/${this.userId}/remove/${id}`, {
+    return this._http.delete(`${this._baseUrl}/${this._userId}/remove/${id}`, {
       responseType: 'json'
     });
   }

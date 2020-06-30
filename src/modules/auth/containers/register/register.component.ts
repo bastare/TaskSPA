@@ -1,3 +1,4 @@
+import { LoaderService } from './../../../../app/shared/interceptors/services/loader.service';
 /** @format */
 
 import { Component, OnInit } from '@angular/core';
@@ -12,7 +13,7 @@ import { UserForAuthorization } from '../../models/user.models';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  fetched: boolean;
+  loaded = this._loaderService.isLoading;
 
   registerForm: FormGroup;
 
@@ -22,9 +23,10 @@ export class RegisterComponent implements OnInit {
   };
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
-    private formBuilder: FormBuilder
+    private _authService: AuthService,
+    private _router: Router,
+    private _formBuilder: FormBuilder,
+    private _loaderService: LoaderService
   ) {}
 
   ngOnInit() {
@@ -32,9 +34,9 @@ export class RegisterComponent implements OnInit {
   }
 
   createRegisterForm() {
-    this.registerForm = this.formBuilder.group(
+    this.registerForm = this._formBuilder.group(
       {
-        login: [
+        userName: [
           '',
           [
             Validators.required,
@@ -65,29 +67,17 @@ export class RegisterComponent implements OnInit {
 
   authorization() {
     if (this.registerForm.valid) {
-      this.fetched = true;
       const user = this.registerForm.value as UserForAuthorization;
 
-      this.authService.register$(user).subscribe(
-        () =>
-          this.authService.login$(user).subscribe(
-            () => this.router.navigateByUrl('/home'),
-            error => {
-              if (!this.error.state) {
-                this.error.state = !this.error.state;
-                this.error.message = error.error;
-
-                console.error(error);
-              }
-            }
-          ),
+      this._authService.register$(user).subscribe(
+        () => this._router.navigateByUrl('/home'),
         error => {
           if (!this.error.state) {
-            this.error.state = !this.error.state;
-            this.error.message = error.error;
-
+            error.error?.forEach((error) => {
+              this.error.state = !this.error.state;
+              this.error.message = error.description
+            })
             console.error(error);
-            this.fetched = false;
           }
         }
       );

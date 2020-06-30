@@ -1,3 +1,4 @@
+import { LoaderService } from './../../../../app/shared/interceptors/services/loader.service';
 /** @format */
 
 import { Component, OnInit } from '@angular/core';
@@ -12,7 +13,7 @@ import { UserForAuthorization } from '../../models';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  fetched: boolean;
+  loaded = this._loaderService.isLoading;
 
   loginForm: FormGroup;
 
@@ -22,9 +23,10 @@ export class LoginComponent implements OnInit {
   };
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
-    private formBuilder: FormBuilder
+    private _authService: AuthService,
+    private _router: Router,
+    private _formBuilder: FormBuilder,
+    private _loaderService : LoaderService
   ) {}
 
   ngOnInit() {
@@ -32,21 +34,19 @@ export class LoginComponent implements OnInit {
   }
 
   createLoginForm() {
-    this.loginForm = this.formBuilder.group({
-      login: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+$/)]],
+    this.loginForm = this._formBuilder.group({
+      userName: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+$/)]],
       password: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]+$/)]]
     });
   }
 
   authorize() {
     if (this.loginForm.valid) {
-      this.fetched = true;
-
       const user = this.loginForm.value as UserForAuthorization;
 
-      this.authService.login$(user).subscribe(
+      this._authService.login$(user).subscribe(
         () => {
-          this.router.navigateByUrl('/home');
+          this._router.navigateByUrl('/home');
         },
         error => {
           if (error.status === 401) {
@@ -56,7 +56,6 @@ export class LoginComponent implements OnInit {
               console.log(error);
             }
           }
-          this.fetched = false;
         }
       );
     }

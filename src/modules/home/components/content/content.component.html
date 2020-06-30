@@ -1,18 +1,25 @@
-<ngx-loading [show]="!this.userData" [config]="{ fullScreenBackdrop: true }"></ngx-loading>
+<div class="row">
+    <div class="col-11">
+        <ngx-loading [show]="!this.userData" [config]="{ fullScreenBackdrop: true }"></ngx-loading>
 
 
-<button *ngIf="this.userData" id="exit" (click)="auth.logOut()" mat-icon-button="mat-icon-button" color="warn">
-    <mat-icon>exit_to_app</mat-icon>
-</button>
-
-<div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150" infiniteScrollContainer="#content" [fromRoot]="true" (scrolled)="accumulateProjects()">
-    <app-project *ngFor="let item of this.userData" [data]="item"></app-project>
-</div>
+        <div infiniteScroll="infiniteScroll" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150" infiniteScrollContainer="#content" [fromRoot]="true" (scrolled)="accumulateProjects()">
+            <app-project *ngFor="let item of this.userData" [data]="item"></app-project>
+        </div>
 
 
-<button *ngIf="this.userData" id="add" (click)="createProjectDialog()" mat-fab="mat-fab" color="primary">
-    <mat-icon>add</mat-icon>
-</button>
-<div id="loader">
-    <ngx-loading [show]="loaded | async" [config]="config"></ngx-loading>
+        <button *ngIf="this.userData" id="add" (click)="createProjectDialog()" mat-fab="mat-fab" color="primary">
+            <mat-icon>add</mat-icon>
+        </button>
+
+        <div id="loader">
+            <ngx-loading [show]="loaded | async" [config]="config"></ngx-loading>
+        </div>
+    </div>
+    <div class="col-1">
+        <button *ngIf="this.userData" id="exit" (click)="auth.logOut()" mat-icon-button="mat-icon-button" color="warn">
+            <mat-icon>exit_to_app</mat-icon>
+        </button>
+    </div>
+
 </div>

@@ -11,6 +11,6 @@ export class TaskResolve implements Resolve<any> {
   constructor(private taskService: TaskService, private auth: AuthService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
-    return this.taskService.removeTask$(this.auth.UserId);
+    return this.taskService.removeTask$(this.auth.getUserId());
   }
 }

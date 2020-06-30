@@ -5,7 +5,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content id="content">
-    <button mat-button (click)="sidenav.toggle()">Toggle</button>
+    <button *appRoleGuard="['Admin']" mat-button (click)="sidenav.toggle()">Toggle</button>
 
     <app-content></app-content>
   </mat-sidenav-content>

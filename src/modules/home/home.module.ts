@@ -23,6 +23,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { ContentComponent } from './components/content/content.component';
+import { RoleGuardDirective } from './directives/role-guard.directive';
 
 @NgModule({
   imports: [
@@ -42,7 +43,7 @@ import { ContentComponent } from './components/content/content.component';
     MatListModule
   ],
   providers: [...authServices.services, ...authGuards.guards],
-  declarations: [...authContainers.containers, ...authComponents.components, ContentComponent],
+  declarations: [...authContainers.containers, ...authComponents.components, ContentComponent, RoleGuardDirective],
   exports: [...authContainers.containers, ...authComponents.components]
 })
 export class HomeModule {}
